@@ -7,6 +7,26 @@ const App = () => {
   const [report, setReport] = useState('');
   const [error, setError] = useState('');
 
+  // Character limits for each question type
+  const characterLimits = {
+    0: 200,  // Current Positioning
+    1: 300,  // ICP Foundation
+    2: 300,  // ICP Foundation
+    3: 250,  // Dream Outcome & Status Elevation
+    4: 250,  // Dream Outcome & Status Elevation
+    5: 200,  // Emotional & Hidden Pain Extraction
+    6: 200,  // Emotional & Hidden Pain Extraction
+    7: 200,  // Emotional & Hidden Pain Extraction
+    8: 200,  // Urgency & Pressure Points
+    9: 200,  // Urgency & Pressure Points
+    10: 250, // Buying Psychology
+    11: 250, // Buying Psychology
+    12: 200, // Effort & Sacrifice Barriers
+    13: 200, // Effort & Sacrifice Barriers
+    14: 300, // About Your Business
+    15: 300  // About Your Business
+  };
+
   const sections = [
     {
       title: "Current Positioning",
@@ -82,12 +102,23 @@ const App = () => {
   const currentSection = currentQuestion ? currentQuestion.sectionIndex : 0;
   const totalQuestions = allQuestions.length;
 
+  const getCurrentCharLimit = () => {
+    return characterLimits[currentQuestionIndex] || 200;
+  };
+
+  const getCurrentResponseLength = () => {
+    return responses[currentQuestion?.id]?.length || 0;
+  };
+
   const handleResponseChange = (value) => {
     if (currentQuestion) {
-      setResponses(prev => ({
-        ...prev,
-        [currentQuestion.id]: value
-      }));
+      const charLimit = getCurrentCharLimit();
+      if (value.length <= charLimit) {
+        setResponses(prev => ({
+          ...prev,
+          [currentQuestion.id]: value
+        }));
+      }
     }
   };
 
@@ -242,6 +273,10 @@ const App = () => {
   const questionInSection = currentQuestionIndex - questionsBeforeSection + 1;
   const questionsInCurrentSection = sections[currentSection]?.questions.length || 1;
 
+  const charLimit = getCurrentCharLimit();
+  const currentLength = getCurrentResponseLength();
+  const isAtLimit = currentLength >= charLimit;
+
   if (report) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
@@ -302,6 +337,9 @@ const App = () => {
               <div className="bg-blue-50 rounded-lg p-4 mb-6">
                 <p className="text-blue-800">
                   <strong>Responses completed:</strong> {Object.keys(responses).length} of {totalQuestions} questions
+                </p>
+                <p className="text-blue-600 text-sm mt-1">
+                  Estimated transcript size: ~{Object.values(responses).join('').length} characters
                 </p>
               </div>
             </div>
@@ -376,12 +414,33 @@ const App = () => {
             </p>
           </div>
 
-          <textarea
-            value={responses[currentQuestion?.id] || ''}
-            onChange={(e) => handleResponseChange(e.target.value)}
-            placeholder="Please provide your detailed response here..."
-            className="w-full h-32 p-4 border border-gray-200 rounded-lg resize-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-          />
+          <div className="relative">
+            <textarea
+              value={responses[currentQuestion?.id] || ''}
+              onChange={(e) => handleResponseChange(e.target.value)}
+              placeholder="Please provide your focused response here..."
+              className={`w-full h-32 p-4 border rounded-lg resize-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent ${
+                isAtLimit ? 'border-orange-300 bg-orange-50' : 'border-gray-200'
+              }`}
+            />
+            
+            {/* Character Counter */}
+            <div className={`absolute bottom-2 right-2 text-xs px-2 py-1 rounded ${
+              currentLength > charLimit * 0.8 
+                ? 'bg-orange-100 text-orange-700' 
+                : 'bg-gray-100 text-gray-600'
+            }`}>
+              {currentLength}/{charLimit}
+            </div>
+          </div>
+
+          {/* Character Limit Info */}
+          <div className="mt-2 text-sm text-gray-500">
+            💡 Keep responses focused and concise for optimal analysis
+            {isAtLimit && (
+              <span className="text-orange-600 font-medium"> - Character limit reached</span>
+            )}
+          </div>
 
           <div className="flex justify-between mt-6">
             <button
