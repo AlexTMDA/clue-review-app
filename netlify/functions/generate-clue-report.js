@@ -1,11 +1,9 @@
 // netlify/functions/generate-clue-report.js
 
-// Configure function timeout
-export const config = {
-  maxDuration: 30
-};
-
 exports.handler = async (event, context) => {
+  // Set longer timeout for this function
+  context.callbackWaitsForEmptyEventLoop = false;
+  
   // CORS headers - MUST be consistent across all responses
   const headers = {
     "Access-Control-Allow-Origin": "*",
@@ -58,31 +56,30 @@ exports.handler = async (event, context) => {
 
     console.log("Starting Claude API call...");
 
-    // Call Claude API with increased timeout
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 25000); // 25 second timeout
-
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": apiKey,
-        "anthropic-version": "2023-06-01"
-      },
-      body: JSON.stringify({
-        model: "claude-3-5-sonnet-20241022",
-        max_tokens: 4000, // Reduced slightly for faster generation
-        messages: [
-          {
-            role: "user",
-            content: `${prompt}\n\nDiscovery Call Transcript:\n${transcript}`
-          }
-        ]
+    // Call Claude API with timeout handling
+    const response = await Promise.race([
+      fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": apiKey,
+          "anthropic-version": "2023-06-01"
+        },
+        body: JSON.stringify({
+          model: "claude-3-5-sonnet-20241022",
+          max_tokens: 4000,
+          messages: [
+            {
+              role: "user",
+              content: `${prompt}\n\nDiscovery Call Transcript:\n${transcript}`
+            }
+          ]
+        })
       }),
-      signal: controller.signal
-    });
-
-    clearTimeout(timeoutId);
+      new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Request timeout')), 25000)
+      )
+    ]);
 
     if (!response.ok) {
       const errorText = await response.text();
@@ -114,7 +111,7 @@ exports.handler = async (event, context) => {
     console.error("Function error:", error);
     
     // Handle timeout specifically
-    if (error.name === 'AbortError') {
+    if (error.message === 'Request timeout') {
       return {
         statusCode: 408,
         headers,
