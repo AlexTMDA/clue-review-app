@@ -9,46 +9,57 @@ const App = () => {
 
   const sections = [
     {
-      title: "Business Foundation",
+      title: "Current Positioning",
       questions: [
-        "Why was the business started? What sparked the business idea?",
-        "What is your current value positioning and key message?",
-        "How would you describe your ideal customer (ICP) - company size, role, industry?",
-        "What are your average deal sizes and current goals for the next 12-24 months?",
-        "What's your current client acquisition strategy and how many qualified conversations are you having monthly?"
+        "What is your current value positioning and key message?"
       ]
     },
     {
-      title: "ICP Deep Intelligence",
+      title: "ICP Foundation", 
+      questions: [
+        "How would you describe your ideal customer (ICP) - company size, role, industry?",
+        "What are your average deal sizes and current goals for the next 12-24 months?"
+      ]
+    },
+    {
+      title: "Dream Outcome & Status Elevation",
       questions: [
         "When your clients succeed with your solution, how do they get recognized internally? What makes them the hero?",
-        "What career advancement or industry recognition do your successful clients typically achieve?",
+        "What career advancement or industry recognition do your successful clients typically achieve?"
+      ]
+    },
+    {
+      title: "Emotional & Hidden Pain Extraction",
+      questions: [
         "Describe a typical stressful day for your ideal client dealing with the problem you solve.",
         "What keeps your ideal clients up at night about this type of decision?",
-        "What career fears do they have about making the wrong choice? What happens if it fails?",
+        "What career fears do they have about making the wrong choice? What happens if it fails?"
+      ]
+    },
+    {
+      title: "Urgency & Pressure Points",
+      questions: [
         "What external pressures (competitors, regulations, leadership) create urgency for them to act?",
-        "How quickly do they need to show results to maintain internal support?",
+        "How quickly do they need to show results to maintain internal support?"
+      ]
+    },
+    {
+      title: "Buying Psychology",
+      questions: [
         "What proof or validation do they need before they'll stake their reputation on a solution?",
-        "Walk me through how they typically discover and evaluate solutions - who's involved?",
+        "Walk me through how they typically discover and evaluate solutions - who's involved?"
+      ]
+    },
+    {
+      title: "Effort & Sacrifice Barriers",
+      questions: [
         "What's the most frustrating part of their current approach? What makes change feel overwhelming?",
         "What internal resistance do they face when proposing solutions like yours?"
       ]
     },
     {
-      title: "Your Business Psychology",
+      title: "About Your Business",
       questions: [
-        "What would achieving your growth goals mean for you personally - lifestyle, recognition, industry status?",
-        "What's your biggest concern about implementing complex marketing systems? What's been frustrating about past marketing efforts?",
-        "How do you typically evaluate significant business investments? What would make a marketing partnership feel like a bargain?",
-        "What's driving the urgency to solve this now vs. waiting? What happens if growth stagnates?",
-        "What would you need to see in the first 90 days to feel confident in a marketing partnership? What guarantees or assurances matter most?"
-      ]
-    },
-    {
-      title: "Current Performance & Competition",
-      questions: [
-        "What have you tried that hasn't worked to the level you wanted?",
-        "Who are your main competitors and how do they position themselves?",
         "What success stories do you have? What's the common theme between them?",
         "What are customers saying about you that they don't say about competitors?"
       ]
@@ -99,7 +110,7 @@ const App = () => {
   };
 
   const formatResponsesAsTranscript = () => {
-    let transcript = "CLUE Discovery Call Transcript\n\n";
+    let transcript = "USP-Focused Discovery Call Transcript\n\n";
     
     sections.forEach((section, sectionIndex) => {
       transcript += `=== ${section.title} ===\n\n`;
@@ -171,13 +182,13 @@ const App = () => {
     }
   };
 
-  const generateCLUEReport = async () => {
+  const generateUSPReport = async () => {
     setIsGenerating(true);
     setError('');
     setReport('');
 
     try {
-      console.log('Starting CLUE report generation...');
+      console.log('Starting USP report generation...');
       
       // Check if we have responses
       const responseCount = Object.keys(responses).length;
@@ -196,15 +207,15 @@ const App = () => {
       const prompt = await fetchLatestPrompt();
 
       // Generate the report
-      console.log('Generating report...');
+      console.log('Generating USP report...');
       const generatedReport = await callClaudeAPI(prompt, transcript);
 
-      console.log('Report generated successfully!');
+      console.log('USP report generated successfully!');
       setReport(generatedReport);
 
     } catch (error) {
-      console.error('Report generation failed:', error);
-      setError(`Failed to generate report: ${error.message}`);
+      console.error('USP report generation failed:', error);
+      setError(`Failed to generate USP report: ${error.message}`);
     } finally {
       setIsGenerating(false);
     }
@@ -217,7 +228,7 @@ const App = () => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'clue-review-report.txt';
+    a.download = 'usp-analysis-report.txt';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -238,10 +249,10 @@ const App = () => {
           <div className="bg-white rounded-2xl shadow-xl p-8">
             <div className="text-center mb-8">
               <h1 className="text-3xl font-bold text-gray-800 mb-4">
-                Your CLUE Review Report
+                Your USP Analysis Report
               </h1>
               <p className="text-gray-600">
-                Your comprehensive strategic analysis is ready!
+                Your strategic USP analysis using the Value Equation framework is ready!
               </p>
             </div>
 
@@ -256,7 +267,7 @@ const App = () => {
                 onClick={downloadReport}
                 className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
               >
-                Download Report
+                Download USP Report
               </button>
               <button
                 onClick={() => {
@@ -267,7 +278,7 @@ const App = () => {
                 }}
                 className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
               >
-                Start New Review
+                Start New Analysis
               </button>
             </div>
           </div>
@@ -283,10 +294,10 @@ const App = () => {
           <div className="bg-white rounded-2xl shadow-xl p-8">
             <div className="text-center mb-8">
               <h1 className="text-3xl font-bold text-gray-800 mb-4">
-                Review Complete!
+                USP Analysis Complete!
               </h1>
               <p className="text-gray-600 mb-6">
-                You've answered all {totalQuestions} questions. Ready to generate your CLUE Review?
+                You've answered all {totalQuestions} strategic questions. Ready to generate your USP analysis?
               </p>
               <div className="bg-blue-50 rounded-lg p-4 mb-6">
                 <p className="text-blue-800">
@@ -304,11 +315,11 @@ const App = () => {
 
             <div className="flex gap-4 justify-center">
               <button
-                onClick={generateCLUEReport}
+                onClick={generateUSPReport}
                 disabled={isGenerating}
                 className="bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-300 text-white px-8 py-4 rounded-lg font-medium text-lg transition-colors"
               >
-                {isGenerating ? 'Generating Report...' : 'Generate CLUE Review'}
+                {isGenerating ? 'Generating USP Analysis...' : 'Generate USP Analysis'}
               </button>
               <button
                 onClick={() => setCurrentQuestionIndex(totalQuestions - 1)}
@@ -322,7 +333,7 @@ const App = () => {
               <div className="mt-6 text-center">
                 <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
                 <p className="mt-2 text-gray-600">
-                  Analyzing your responses and generating your strategic review...
+                  Analyzing your responses using the Value Equation framework...
                 </p>
               </div>
             )}
@@ -386,7 +397,7 @@ const App = () => {
               disabled={currentQuestionIndex >= totalQuestions - 1}
               className="bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-300 text-white px-6 py-3 rounded-lg font-medium transition-colors"
             >
-              {currentQuestionIndex === totalQuestions - 1 ? 'Review Responses' : 'Next Question'}
+              {currentQuestionIndex === totalQuestions - 1 ? 'Complete Analysis' : 'Next Question'}
             </button>
           </div>
 
@@ -397,7 +408,7 @@ const App = () => {
                 onClick={() => setCurrentQuestionIndex(totalQuestions)}
                 className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-lg font-medium text-lg transition-colors"
               >
-                Complete Review & Generate Report
+                Complete & Generate USP Analysis
               </button>
             </div>
           )}
