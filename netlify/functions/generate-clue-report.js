@@ -65,7 +65,7 @@ exports.handler = async (event, context) => {
     console.log(`📝 Prompt length: ${prompt.length} characters`);
     console.log(`📝 Transcript length: ${transcript.length} characters`);
     console.log(`📝 Total input size: ${(prompt + transcript).length} characters`);
-    console.log(`🎯 Max tokens set to: 400`);
+    console.log(`🎯 Max tokens set to: 300`);
 
     const apiCallStartTime = Date.now();
     console.log(`🌐 Starting Claude API call at: ${new Date().toISOString()}`);
@@ -81,7 +81,7 @@ exports.handler = async (event, context) => {
         },
         body: JSON.stringify({
           model: "claude-3-5-sonnet-20241022",
-          max_tokens: 400,
+          max_tokens: 300,
           messages: [
             {
               role: "user",
