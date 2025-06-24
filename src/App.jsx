@@ -10,10 +10,11 @@ const App = () => {
 
   const sections = [
     {
-      title: "Current Positioning",
+      title: "Business Information",
       icon: Target,
       color: "orange-600",
       questions: [
+        "What is the name of your business?",
         "What is your current value positioning and key message?"
       ]
     },
@@ -84,8 +85,9 @@ const App = () => {
   ];
 
   const getPlaceholderText = (questionText) => {
-    // No placeholder for the first question about current value positioning
-    if (questionText === "What is your current value positioning and key message?") {
+    // No placeholder for business name and value positioning questions
+    if (questionText === "What is the name of your business?" || 
+        questionText === "What is your current value positioning and key message?") {
       return "";
     }
     
@@ -267,8 +269,9 @@ const App = () => {
       const inadequateResponses = [];
       Object.entries(responses).forEach(([questionId, response]) => {
         const questionText = allQuestions.find(q => q.id === questionId)?.question || '';
-        // Skip the first question (value positioning) from validation
-        if (questionText !== "What is your current value positioning and key message?") {
+        // Skip the business name and value positioning questions from validation
+        if (questionText !== "What is the name of your business?" && 
+            questionText !== "What is your current value positioning and key message?") {
           if (!response || response.trim().length < 50) {
             inadequateResponses.push(questionText);
           }
@@ -485,13 +488,7 @@ const App = () => {
               <div className="mt-8 bg-gray-50 rounded-xl p-6">
                 <div className="text-center">
                   <div className="text-gray-700 font-semibold mb-2">
-                    Analyzing Strategic Intelligence...
-                  </div>
-                  <p className="text-gray-600 text-sm">
-                    Claude Sonnet 4 is processing your responses using Alex Hormozi's complete Value Equation framework
-                  </p>
-                  <div className="mt-4 text-xs text-gray-500">
-                    Generating comprehensive USP analysis • Expected completion: 15-30 seconds
+                    Analysing responses. Estimated completion time 15-30 seconds
                   </div>
                 </div>
               </div>
