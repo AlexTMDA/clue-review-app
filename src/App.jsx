@@ -408,8 +408,8 @@ const App = () => {
               <Search className="w-8 h-8 text-orange-400" />
               <h1 className="text-2xl font-bold">The Marketing Detective Agency</h1>
             </div>
-            <h2 className="text-3xl font-bold text-white mb-2">Evidence Collection Complete</h2>
-            <p className="text-gray-300 text-lg">Ready to analyze your strategic intelligence</p>
+            <h2 className="text-3xl font-bold text-white mb-2">Ready for Analysis</h2>
+            <p className="text-gray-300 text-lg">Thank you for answering our strategic questions. Our Value Proposition framework analysis will create you a new value proposition and messaging that will exponentially improve your marketing and sales.</p>
           </div>
         </div>
 
@@ -421,23 +421,8 @@ const App = () => {
               <h3 className="text-2xl font-bold text-teal-800 mb-4">Investigation Ready for Analysis</h3>
               <p className="text-teal-700 text-lg mb-6">
                 You've provided comprehensive responses to all {totalQuestions} strategic questions. 
-                Our Value Equation framework analysis will reveal critical insights for your business growth.
+                Our Value Proposition framework analysis will reveal critical insights for your business growth.
               </p>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                <div className="bg-white rounded-lg p-4 shadow-sm">
-                  <div className="text-2xl font-bold text-teal-600">{Object.keys(responses).length}</div>
-                  <div className="text-sm text-gray-600">Questions Answered</div>
-                </div>
-                <div className="bg-white rounded-lg p-4 shadow-sm">
-                  <div className="text-2xl font-bold text-orange-600">~{Math.round(Object.values(responses).join('').length / 1000)}K</div>
-                  <div className="text-sm text-gray-600">Characters Provided</div>
-                </div>
-                <div className="bg-white rounded-lg p-4 shadow-sm">
-                  <div className="text-2xl font-bold text-yellow-600">£1,500</div>
-                  <div className="text-sm text-gray-600">Analysis Value</div>
-                </div>
-              </div>
             </div>
           </div>
 
@@ -467,12 +452,12 @@ const App = () => {
               {isGenerating ? (
                 <>
                   <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
-                  Generating Strategic Analysis...
+                  Generating Your Value Proposition...
                 </>
               ) : (
                 <>
                   <FileText className="w-6 h-6" />
-                  Generate CLUE Analysis
+                  Generate My Value Proposition
                 </>
               )}
             </button>
@@ -658,33 +643,20 @@ const App = () => {
             </div>
             
             <button
-              onClick={nextQuestion}
-              disabled={currentQuestionIndex >= totalQuestions - 1}
-              className="bg-orange-600 hover:bg-orange-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white px-6 py-3 rounded-lg font-semibold transition-all duration-200 shadow-lg disabled:shadow-none flex items-center gap-2"
+              onClick={currentQuestionIndex === totalQuestions - 1 ? () => setCurrentQuestionIndex(totalQuestions) : nextQuestion}
+              disabled={currentQuestionIndex === totalQuestions - 1 && !responses[currentQuestion?.id]?.trim()}
+              className={`${
+                currentQuestionIndex === totalQuestions - 1 
+                  ? 'bg-teal-600 hover:bg-teal-700 disabled:bg-gray-400' 
+                  : 'bg-orange-600 hover:bg-orange-700 disabled:bg-gray-400'
+              } disabled:cursor-not-allowed text-white px-6 py-3 rounded-lg font-semibold transition-all duration-200 shadow-lg disabled:shadow-none flex items-center gap-2`}
             >
-              {currentQuestionIndex === totalQuestions - 1 ? 'Complete Investigation' : 'Next Question'}
+              {currentQuestionIndex === totalQuestions - 1 ? 'Generate My Value Proposition' : 'Next Question'}
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
 
-          {/* Quick Complete Option */}
-          {currentQuestionIndex === totalQuestions - 1 && (
-            <div className="bg-yellow-50 p-6 border-t border-gray-200">
-              <div className="text-center">
-                <h5 className="text-lg font-semibold text-gray-800 mb-2">Ready to Generate Your Strategic Analysis?</h5>
-                <p className="text-gray-600 mb-4">
-                  Complete the investigation and receive your comprehensive Value Equation framework analysis.
-                </p>
-                <button
-                  onClick={() => setCurrentQuestionIndex(totalQuestions)}
-                  className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-4 rounded-lg font-bold text-lg transition-all duration-200 shadow-lg hover:shadow-xl flex items-center gap-2 mx-auto"
-                >
-                  <FileText className="w-5 h-5" />
-                  Generate CLUE Analysis
-                </button>
-              </div>
-            </div>
-          )}
+          {/* Quick Complete Option - REMOVED */}
         </div>
       </div>
     </div>
