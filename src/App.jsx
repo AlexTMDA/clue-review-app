@@ -331,7 +331,7 @@ const App = () => {
   // Report Results Screen
   if (report) {
     return (
-      <div className="min-h-screen bg-white" style={{ fontFamily: 'Questrial, system-ui, -apple-system, sans-serif' }}>
+      <div className="min-h-screen bg-white">
         {/* Header */}
         <div style={{ backgroundColor: '#264653' }} className="text-white">
           <div className="max-w-6xl mx-auto px-6 py-8">
@@ -416,7 +416,7 @@ const App = () => {
   // Review & Generate Screen
   if (currentQuestionIndex >= totalQuestions) {
     return (
-      <div className="min-h-screen bg-white" style={{ fontFamily: 'Questrial, system-ui, -apple-system, sans-serif' }}>
+      <div className="min-h-screen bg-white">
         {/* Header */}
         <div style={{ backgroundColor: '#264653' }} className="text-white">
           <div className="max-w-6xl mx-auto px-6 py-8">
@@ -503,7 +503,7 @@ const App = () => {
   const IconComponent = currentQuestion?.sectionIcon || Target;
 
   return (
-    <div className="min-h-screen bg-white font-sans" style={{ fontFamily: 'Questrial, system-ui, -apple-system, sans-serif' }}>
+    <div className="min-h-screen bg-white">
       {/* Header */}
       <div style={{ backgroundColor: '#264653' }} className="text-white">
         <div className="max-w-6xl mx-auto px-6 py-6">
