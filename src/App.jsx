@@ -263,6 +263,22 @@ const App = () => {
         throw new Error('No responses provided. Please answer at least some questions.');
       }
 
+      // Quality Gate: Check for minimum response quality
+      const inadequateResponses = [];
+      Object.entries(responses).forEach(([questionId, response]) => {
+        const questionText = allQuestions.find(q => q.id === questionId)?.question || '';
+        // Skip the first question (value positioning) from validation
+        if (questionText !== "What is your current value positioning and key message?") {
+          if (!response || response.trim().length < 50) {
+            inadequateResponses.push(questionText);
+          }
+        }
+      });
+
+      if (inadequateResponses.length > 0) {
+        throw new Error(`Please provide more detailed responses (minimum 50 characters) for the following questions to generate a valuable analysis:\n\n${inadequateResponses.map(q => `• ${q}`).join('\n')}`);
+      }
+
       // Format the transcript
       const transcript = formatResponsesAsTranscript();
       console.log('Transcript formatted, length:', transcript.length);
@@ -316,12 +332,9 @@ const App = () => {
         {/* Header */}
         <div style={{ backgroundColor: '#264653' }} className="text-white">
           <div className="max-w-6xl mx-auto px-6 py-8">
-            <div className="flex items-center gap-3 mb-4">
-              <Search className="w-8 h-8 text-orange-400" />
-              <h1 className="text-2xl font-bold">The Marketing Detective Agency</h1>
+            <div className="flex items-center justify-center">
+              <img src="/logo.png" alt="The Marketing Detective Agency" className="h-12" />
             </div>
-            <h2 className="text-3xl font-bold text-white mb-2">CLUE Investigation Complete</h2>
-            <p className="text-gray-300 text-lg">Your strategic intelligence report is ready for analysis</p>
           </div>
         </div>
 
@@ -331,8 +344,8 @@ const App = () => {
             <div className="flex items-center gap-3">
               <CheckCircle className="w-6 h-6 text-teal-600" />
               <div>
-                <h3 className="text-lg font-semibold text-teal-800">Strategic Analysis Complete</h3>
-                <p className="text-teal-700">Comprehensive Value Equation framework analysis using Alex Hormozi's proven methodology</p>
+                <h3 className="text-lg font-semibold text-teal-800">Value Proposition Complete</h3>
+                <p className="text-teal-700">Your new value proposition and messaging are now ready for you to implement into your business!</p>
               </div>
             </div>
           </div>
@@ -341,9 +354,9 @@ const App = () => {
           <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
             <div className="bg-gray-50 px-6 py-4 border-b border-gray-200">
               <div className="flex items-center justify-between">
-                <h3 className="text-xl font-bold text-gray-800">Strategic Findings & Revenue Directive</h3>
+                <h3 className="text-xl font-bold text-gray-800">Your Brand New Value Proposition and Messaging Are Ready!</h3>
                 <div className="text-sm text-gray-600">
-                  Generated using Claude Sonnet 4 • {new Date().toLocaleDateString()}
+                  Generated • {new Date().toLocaleDateString()} {new Date().toLocaleTimeString()}
                 </div>
               </div>
             </div>
@@ -364,7 +377,7 @@ const App = () => {
               className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-200 shadow-lg hover:shadow-xl flex items-center gap-2"
             >
               <Download className="w-5 h-5" />
-              Download Strategic Report
+              Download Value Proposition Document
             </button>
             <button
               onClick={() => {
@@ -376,7 +389,7 @@ const App = () => {
               className="bg-white hover:bg-gray-50 text-gray-700 px-8 py-4 rounded-lg font-semibold transition-all duration-200 shadow-lg hover:shadow-xl border border-gray-300 flex items-center gap-2"
             >
               <Search className="w-5 h-5" />
-              Start New Investigation
+              Start Again
             </button>
           </div>
 
@@ -385,7 +398,7 @@ const App = () => {
             <div className="bg-orange-50 rounded-xl p-8 border border-orange-200">
               <h4 className="text-2xl font-bold text-gray-800 mb-4">Ready to Implement These Insights?</h4>
               <p className="text-gray-700 text-lg mb-4">
-                This strategic analysis reveals the exact framework to transform your client acquisition approach.
+                Not sure what the next steps are?
               </p>
               <p className="text-orange-600 font-semibold">
                 Contact The Marketing Detective Agency to discuss implementation partnership opportunities.
@@ -404,12 +417,9 @@ const App = () => {
         {/* Header */}
         <div style={{ backgroundColor: '#264653' }} className="text-white">
           <div className="max-w-6xl mx-auto px-6 py-8">
-            <div className="flex items-center gap-3 mb-4">
-              <Search className="w-8 h-8 text-orange-400" />
-              <h1 className="text-2xl font-bold">The Marketing Detective Agency</h1>
+            <div className="flex items-center justify-center mb-4">
+              <img src="/logo.png" alt="The Marketing Detective Agency" className="h-12" />
             </div>
-            <h2 className="text-3xl font-bold text-white mb-2">Ready for Analysis</h2>
-            <p className="text-gray-300 text-lg">Thank you for answering our strategic questions. Our Value Proposition framework analysis will create you a new value proposition and messaging that will exponentially improve your marketing and sales.</p>
           </div>
         </div>
 
@@ -418,10 +428,9 @@ const App = () => {
           <div className="bg-teal-50 rounded-xl p-8 mb-8 border border-teal-200">
             <div className="text-center">
               <CheckCircle className="w-16 h-16 text-teal-600 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-teal-800 mb-4">Investigation Ready for Analysis</h3>
+              <h3 className="text-2xl font-bold text-teal-800 mb-4">Ready for Analysis</h3>
               <p className="text-teal-700 text-lg mb-6">
-                You've provided comprehensive responses to all {totalQuestions} strategic questions. 
-                Our Value Proposition framework analysis will reveal critical insights for your business growth.
+                Thank you for answering our strategic questions. Our Value Proposition framework analysis will create you a new value proposition and messaging that will exponentially improve your marketing and sales.
               </p>
             </div>
           </div>
@@ -501,9 +510,8 @@ const App = () => {
       {/* Header */}
       <div style={{ backgroundColor: '#264653' }} className="text-white">
         <div className="max-w-6xl mx-auto px-6 py-6">
-          <div className="flex items-center gap-3 mb-4">
-            <Search className="w-8 h-8 text-orange-400" />
-            <h1 className="text-2xl font-bold">The Marketing Detective Agency</h1>
+          <div className="flex items-center justify-center mb-4">
+            <img src="/logo.png" alt="The Marketing Detective Agency" className="h-10" />
           </div>
           <div className="flex items-center justify-between">
             <div>
