@@ -7,26 +7,6 @@ const App = () => {
   const [report, setReport] = useState('');
   const [error, setError] = useState('');
 
-  // Character limits for each question type
-  const characterLimits = {
-    0: 200,  // Current Positioning
-    1: 300,  // ICP Foundation
-    2: 300,  // ICP Foundation
-    3: 250,  // Dream Outcome & Status Elevation
-    4: 250,  // Dream Outcome & Status Elevation
-    5: 200,  // Emotional & Hidden Pain Extraction
-    6: 200,  // Emotional & Hidden Pain Extraction
-    7: 200,  // Emotional & Hidden Pain Extraction
-    8: 200,  // Urgency & Pressure Points
-    9: 200,  // Urgency & Pressure Points
-    10: 250, // Buying Psychology
-    11: 250, // Buying Psychology
-    12: 200, // Effort & Sacrifice Barriers
-    13: 200, // Effort & Sacrifice Barriers
-    14: 300, // About Your Business
-    15: 300  // About Your Business
-  };
-
   const sections = [
     {
       title: "Current Positioning",
@@ -102,23 +82,16 @@ const App = () => {
   const currentSection = currentQuestion ? currentQuestion.sectionIndex : 0;
   const totalQuestions = allQuestions.length;
 
-  const getCurrentCharLimit = () => {
-    return characterLimits[currentQuestionIndex] || 200;
-  };
-
   const getCurrentResponseLength = () => {
     return responses[currentQuestion?.id]?.length || 0;
   };
 
   const handleResponseChange = (value) => {
     if (currentQuestion) {
-      const charLimit = getCurrentCharLimit();
-      if (value.length <= charLimit) {
-        setResponses(prev => ({
-          ...prev,
-          [currentQuestion.id]: value
-        }));
-      }
+      setResponses(prev => ({
+        ...prev,
+        [currentQuestion.id]: value
+      }));
     }
   };
 
@@ -176,10 +149,10 @@ const App = () => {
 
   const callClaudeAPI = async (prompt, transcript) => {
     try {
-      console.log('Calling Netlify function...');
-      console.log('Function URL: /.netlify/functions/generate-clue-report');
+      console.log('Calling Vercel API function...');
+      console.log('Function URL: /api/generate-clue-report');
       
-      const response = await fetch('/.netlify/functions/generate-clue-report', {
+      const response = await fetch('/api/generate-clue-report', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -219,7 +192,7 @@ const App = () => {
     setReport('');
 
     try {
-      console.log('Starting USP report generation...');
+      console.log('Starting comprehensive USP report generation...');
       
       // Check if we have responses
       const responseCount = Object.keys(responses).length;
@@ -234,11 +207,11 @@ const App = () => {
       console.log('Transcript formatted, length:', transcript.length);
 
       // Fetch the latest prompt
-      console.log('Fetching prompt...');
+      console.log('Fetching enhanced Value Equation prompt...');
       const prompt = await fetchLatestPrompt();
 
       // Generate the report
-      console.log('Generating USP report...');
+      console.log('Generating comprehensive USP analysis using Claude Sonnet 4...');
       const generatedReport = await callClaudeAPI(prompt, transcript);
 
       console.log('USP report generated successfully!');
@@ -259,7 +232,7 @@ const App = () => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'usp-analysis-report.txt';
+    a.download = 'value-equation-usp-analysis.txt';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -273,9 +246,7 @@ const App = () => {
   const questionInSection = currentQuestionIndex - questionsBeforeSection + 1;
   const questionsInCurrentSection = sections[currentSection]?.questions.length || 1;
 
-  const charLimit = getCurrentCharLimit();
   const currentLength = getCurrentResponseLength();
-  const isAtLimit = currentLength >= charLimit;
 
   if (report) {
     return (
@@ -284,10 +255,10 @@ const App = () => {
           <div className="bg-white rounded-2xl shadow-xl p-8">
             <div className="text-center mb-8">
               <h1 className="text-3xl font-bold text-gray-800 mb-4">
-                Your USP Analysis Report
+                Your Value Equation USP Analysis
               </h1>
               <p className="text-gray-600">
-                Your strategic USP analysis using the Value Equation framework is ready!
+                Comprehensive strategic analysis using Alex Hormozi's complete Value Equation framework
               </p>
             </div>
 
@@ -302,7 +273,7 @@ const App = () => {
                 onClick={downloadReport}
                 className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
               >
-                Download USP Report
+                Download Analysis
               </button>
               <button
                 onClick={() => {
@@ -329,17 +300,20 @@ const App = () => {
           <div className="bg-white rounded-2xl shadow-xl p-8">
             <div className="text-center mb-8">
               <h1 className="text-3xl font-bold text-gray-800 mb-4">
-                USP Analysis Complete!
+                Strategic Analysis Ready!
               </h1>
               <p className="text-gray-600 mb-6">
-                You've answered all {totalQuestions} strategic questions. Ready to generate your USP analysis?
+                You've provided detailed responses to all {totalQuestions} strategic questions. Ready to generate your comprehensive Value Equation USP analysis?
               </p>
               <div className="bg-blue-50 rounded-lg p-4 mb-6">
                 <p className="text-blue-800">
                   <strong>Responses completed:</strong> {Object.keys(responses).length} of {totalQuestions} questions
                 </p>
                 <p className="text-blue-600 text-sm mt-1">
-                  Estimated transcript size: ~{Object.values(responses).join('').length} characters
+                  Total content: ~{Object.values(responses).join('').length} characters
+                </p>
+                <p className="text-blue-500 text-sm">
+                  Rich detail = Higher quality strategic insights using the Value Equation framework
                 </p>
               </div>
             </div>
@@ -357,7 +331,7 @@ const App = () => {
                 disabled={isGenerating}
                 className="bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-300 text-white px-8 py-4 rounded-lg font-medium text-lg transition-colors"
               >
-                {isGenerating ? 'Generating USP Analysis...' : 'Generate USP Analysis'}
+                {isGenerating ? 'Generating Value Equation Analysis...' : 'Generate USP Analysis'}
               </button>
               <button
                 onClick={() => setCurrentQuestionIndex(totalQuestions - 1)}
@@ -371,7 +345,10 @@ const App = () => {
               <div className="mt-6 text-center">
                 <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
                 <p className="mt-2 text-gray-600">
-                  Analyzing your responses using the Value Equation framework...
+                  Analyzing your detailed responses using Alex Hormozi's complete Value Equation framework...
+                </p>
+                <p className="text-sm text-gray-500 mt-1">
+                  Claude Sonnet 4 is creating your comprehensive strategic analysis
                 </p>
               </div>
             )}
@@ -418,28 +395,19 @@ const App = () => {
             <textarea
               value={responses[currentQuestion?.id] || ''}
               onChange={(e) => handleResponseChange(e.target.value)}
-              placeholder="Please provide your focused response here..."
-              className={`w-full h-32 p-4 border rounded-lg resize-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent ${
-                isAtLimit ? 'border-orange-300 bg-orange-50' : 'border-gray-200'
-              }`}
+              placeholder="Provide detailed, comprehensive responses for deeper strategic insights..."
+              className="w-full h-40 p-4 border border-gray-200 rounded-lg resize-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
             />
             
-            {/* Character Counter */}
-            <div className={`absolute bottom-2 right-2 text-xs px-2 py-1 rounded ${
-              currentLength > charLimit * 0.8 
-                ? 'bg-orange-100 text-orange-700' 
-                : 'bg-gray-100 text-gray-600'
-            }`}>
-              {currentLength}/{charLimit}
+            {/* Character Counter (Informational Only) */}
+            <div className="absolute bottom-2 right-2 text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+              {currentLength} characters
             </div>
           </div>
 
-          {/* Character Limit Info */}
-          <div className="mt-2 text-sm text-gray-500">
-            💡 Keep responses focused and concise for optimal analysis
-            {isAtLimit && (
-              <span className="text-orange-600 font-medium"> - Character limit reached</span>
-            )}
+          {/* Guidance */}
+          <div className="mt-2 text-sm text-gray-600">
+            💡 <strong>No character limits!</strong> Provide rich detail for the highest quality Value Equation analysis
           </div>
 
           <div className="flex justify-between mt-6">
@@ -467,7 +435,7 @@ const App = () => {
                 onClick={() => setCurrentQuestionIndex(totalQuestions)}
                 className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-lg font-medium text-lg transition-colors"
               >
-                Complete & Generate USP Analysis
+                Complete & Generate Value Equation Analysis
               </button>
             </div>
           )}
