@@ -333,7 +333,7 @@ const App = () => {
         <div style={{ backgroundColor: '#264653' }} className="text-white">
           <div className="max-w-6xl mx-auto px-6 py-8">
             <div className="flex items-center justify-center">
-              <img src="/logo.png" alt="The Marketing Detective Agency" className="h-12" />
+              <img src="/logo.png" alt="The Marketing Detective Agency" className="h-18" />
             </div>
           </div>
         </div>
@@ -418,7 +418,7 @@ const App = () => {
         <div style={{ backgroundColor: '#264653' }} className="text-white">
           <div className="max-w-6xl mx-auto px-6 py-8">
             <div className="flex items-center justify-center mb-4">
-              <img src="/logo.png" alt="The Marketing Detective Agency" className="h-12" />
+              <img src="/logo.png" alt="The Marketing Detective Agency" className="h-18" />
             </div>
           </div>
         </div>
@@ -511,7 +511,7 @@ const App = () => {
       <div style={{ backgroundColor: '#264653' }} className="text-white">
         <div className="max-w-6xl mx-auto px-6 py-6">
           <div className="flex items-center justify-center mb-4">
-            <img src="/logo.png" alt="The Marketing Detective Agency" className="h-10" />
+            <img src="/logo.png" alt="The Marketing Detective Agency" className="h-15" />
           </div>
           <div className="flex items-center justify-between">
             <div>
