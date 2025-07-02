@@ -45,7 +45,7 @@ export default async function handler(req, res) {
     console.log(`📝 Transcript length: ${transcript.length} characters`);
     console.log(`📝 Total input size: ${(prompt + transcript).length} characters`);
     console.log(`🎯 Max tokens set to: 1500`);
-    console.log(`🤖 Using Claude Sonnet 4 for maximum quality`);
+    console.log(`🤖 Using Claude Opus 4 for maximum quality`);
 
     const apiCallStartTime = Date.now();
     console.log(`🌐 Starting Claude API call at: ${new Date().toISOString()}`);
@@ -59,7 +59,7 @@ export default async function handler(req, res) {
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',  // Latest Sonnet 4
+        model: 'claude-opus-4-20250514',  // Latest Opus 4
         max_tokens: 1500,  // High quality output
         messages: [
           {

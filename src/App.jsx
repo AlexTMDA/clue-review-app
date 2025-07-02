@@ -291,7 +291,7 @@ const App = () => {
       const prompt = await fetchLatestPrompt();
 
       // Generate the report
-      console.log('Generating comprehensive USP analysis using Claude Sonnet 4...');
+      console.log('Generating comprehensive USP analysis using Claude Opus 4...');
       const generatedReport = await callClaudeAPI(prompt, transcript);
 
       console.log('USP report generated successfully!');
